@@ -1,4 +1,6 @@
 ///Usando lo que solo necesitamos
+library;
+
 import 'package:flutter/material.dart' show IconData, Icons;
 
 /// Ir añadiendo las opciones del menú
@@ -24,6 +26,6 @@ const appMenuItems = <MenuItem>[
   MenuItem(
       title: 'Tarjetas',
       subTitle: 'Un contenedor estilizado',
-      link: '/card',
+      link: '/cards',
       icon: Icons.credit_card),
 ];
