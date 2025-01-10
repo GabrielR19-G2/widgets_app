@@ -8,8 +8,9 @@ class ThemeChangerScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    // por ahora:
-    final isDarkMode = ref.watch(isDarkModeProvider);
+    // final isDarkMode = ref.watch(isDarkModeProvider);
+
+    final isDarkMode = ref.watch(themeNotifierProvider).isDarkMode;
 
     return Scaffold(
       appBar: AppBar(
@@ -20,7 +21,8 @@ class ThemeChangerScreen extends ConsumerWidget {
                 ? Icons.dark_mode_outlined
                 : Icons.light_mode_outlined),
             onPressed: () {
-              ref.read(isDarkModeProvider.notifier).update((state) => !state);
+              ref.read(themeNotifierProvider.notifier).toggleDarkmode();
+              // ref.read(isDarkModeProvider.notifier).update((state) => !state);
             },
           ),
         ],
@@ -37,7 +39,9 @@ class _ThemeChangerView extends ConsumerWidget {
   Widget build(BuildContext context, ref) {
     ///No se usa read porque riverpod sabe qué y cómo va a cambiar (también porque se puede hacer dinámico)
     final List<Color> colors = ref.watch(colorsListProvider);
-    final int selectedColor = ref.watch(selectedColorProvider);
+    // final int selectedColor = ref.watch(selectedColorProvider); //Cambiar
+    // themeNotifierProvider;
+    final colorTheme = ref.watch(themeNotifierProvider).selectedColor;
 
     // ListView para mostrar todos los colores
     return ListView.builder(
@@ -49,10 +53,14 @@ class _ThemeChangerView extends ConsumerWidget {
           subtitle: Text('${color.value}'),
           activeColor: color,
           value: index,
-          groupValue: selectedColor, //Valor seleccionado
+          groupValue: colorTheme, //Valor seleccionado
           onChanged: (value) {
-            // TODO: notificar cambio
-            ref.read(selectedColorProvider.notifier).state = value ?? 0;
+            print('value: $value');
+            // ref.read(selectedColorProvider.notifier).state = value ?? 0;
+            // ref.read(selectedColorProvider.notifier).state = index;
+            ref
+                .read(themeNotifierProvider.notifier)
+                .changeColorIndex(value ?? 0);
           },
         );
       },
